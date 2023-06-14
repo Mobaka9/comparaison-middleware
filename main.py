@@ -21,9 +21,7 @@ def main():
     
 
     
-    if len(sys.argv) < 5:
-        print("Pas assez d'arguments: python3 main.py [protocol] [message_count] [type de test] [port ou adresse broadcast(ivy)]")
-        return
+
 
     parser = argparse.ArgumentParser(description='envoi de messages entre 2 terminaux avec 3 middleware')
     parser.add_argument('--protocol', help='Protocole à utiliser (ivy, zeromq, kafka)')
@@ -61,7 +59,7 @@ def main():
     queue = multiprocessing.Queue()
     logger.info('Démarrage du programme')
 
-    receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.test_type, param.port, queue, logger))
+    receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.test_type, param.port,param.length, queue, logger))
     send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.test_type, param.port, param.length, queue, logger))
     receive_process.start()
     #sleep(2)

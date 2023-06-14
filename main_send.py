@@ -9,7 +9,6 @@ import getopt
 from ivy_protocol import IvyProtocol
 from zeromq import ZeroMQProtocol
 from kafka_protocol import KafkaProtocol
-from message_sender import MessageSender
 from time import sleep
 
 
@@ -17,9 +16,7 @@ from time import sleep
 
 
 def main_send(protocol, message_count, test_type, port,length, queue, logger):
-    if len(sys.argv) < 4:
-        print("Pas assez d'arguments: python3 main.py [protocol] [message_count] [type de test] [port ou adresse broadcast(ivy)]")
-        return
+
 
 
 
@@ -49,43 +46,28 @@ def main_send(protocol, message_count, test_type, port,length, queue, logger):
     message = queue.get()
     if message == "RECEIVER_READY":
         sleep(1)
-        """                 sender = MessageSender(protocol_obj)
-        sender.send_messages(message_count, test_type) """
+
         #calcul des résulat
         length_of_string = int(length)
         message_rand = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+"="
 
-        if test_type == "total":
+        #if test_type == "total":
 
 
-            start_time = time.time() 
-            for i in range(message_count):
-                #print(i)
 
+    #elif test_type == "graph":
+        for i in range(message_count):
+            #print(i)
 
-                message = str(message_rand) + str(start_time)     
-                #message = "hello =" + str(start_time)              #utiliser pour envoyer un message hello court
-                protocol_obj.send_message(message)
-            #message = "last message =" + str(start_time)
-            #protocol_obj.send_message(message, "10002")
-            queue.put("LAST_MESSAGE")
-            
-
-        elif test_type == "graph":
-            for i in range(message_count):
-                #print(i)
-
-                start_time = time.time()
-                message = str(message_rand) + str(start_time)
-                #message = "hello =" + str(start_time)
-                protocol_obj.send_message(message)
-            #message = "last message =" + str(start_time)
-            #protocol_obj.send_message(message, "10002")
-            queue.put("LAST_MESSAGE")
+            start_time = time.time()
+            message = str(message_rand) + str(start_time)
+            #message = "hello =" + str(start_time)
+            protocol_obj.send_message(message)
+        #message = "last message =" + str(start_time)
+        #protocol_obj.send_message(message, "10002")
 
             
-        else :
-            print("mauvais type de test choisi. veuillez entrer soit graph soit total.")
+        #else :
 
     
         for i in range(100):

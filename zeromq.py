@@ -45,14 +45,6 @@ class ZeroMQProtocol(AbstractProtocol):
 
     def receive_message(self,message_count,queue):
         #initialisation
-        """ context2 = zmq.Context()
-        self.socket_test = context2.socket(zmq.PUB)
-        self.socket_test.setsockopt(zmq.SNDHWM, 2000000)
-        self.socket_test.bind("tcp://*:%s" % self.port_test)
-        topic_message = "10000&receiver ready"  # Ajouter le topic au message
-        print(topic_message)
-        self.socket_test.send_string(topic_message) """
-
         queue.put("RECEIVER_READY")
 
         topicfilter = "10001"
@@ -75,5 +67,7 @@ class ZeroMQProtocol(AbstractProtocol):
         while(self.send_end != "LAST_MESSAGE"):
             self.send_end = queue.get()
 
+        
+        self.socket.zmq_close()
         return(self.plt_data)
 

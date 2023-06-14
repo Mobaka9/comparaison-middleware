@@ -87,9 +87,10 @@ class IvyProtocol(AbstractProtocol):
         t1= time.time()
         self.msg = larg[0]
         #print(larg[0])
-        self.id+=1
         tmp = [self.id, larg[0], t1]
         self.plt_data.append(tmp)  
+        self.id+=1
+
         
         
             
@@ -105,4 +106,6 @@ class IvyProtocol(AbstractProtocol):
             self.send_end = queue.get()
             print(self.send_end)
 
+        
+        self.plt_data.pop(0)
         return self.plt_data
