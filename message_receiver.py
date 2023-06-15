@@ -18,7 +18,8 @@ class MessageReceiver:
         plt.plot(range(1, message_count+1), self.plt_data, 'ro')
         plt.xlabel('Message number')
         plt.ylabel('Time (s)')
-        plt.title("temps moyens d'émission de "+str(message_count)+" messages de "+str(self.length)+" caractères avec "+str(protocole))
+        title = "temps individuels d'émission de "+str(message_count)+" messages de "+str(self.length)+" caractères avec "+str(protocole)
+        plt.title(title, loc='center', wrap=True)
         print("La moyenne est", mean(self.plt_data))
         chemin_dossier = "graphiques"
         nom_fichier = 'graph '+str(self.bus)+' '+str(message_count)+'msgs de '+str(self.length)+' carac.png'
@@ -27,7 +28,7 @@ class MessageReceiver:
         plt.close()  # Ferme la figure pour libérer les ressources
 
         
-    def receive_messages(self, message_count, test_type, queue):
+    def receive_messages(self, message_count, queue):
         
         
             print("hey")

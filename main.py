@@ -23,14 +23,12 @@ def main():
     
 
 
-    parser = argparse.ArgumentParser(description='envoi de messages entre 2 terminaux avec 3 middleware')
+    parser = argparse.ArgumentParser(description='Envoi de messages entre 2 terminaux avec 3 middleware', add_help=True)
     parser.add_argument('--protocol', help='Protocole à utiliser (ivy, zeromq, kafka)')
-    parser.add_argument('--message_count', type=int, help='Nombre de messages')
-    parser.add_argument('--test_type', help='Type de test')
-    parser.add_argument('--port', help='Port ou address (seulement pour)')
-    parser.add_argument('--length',default='3000', help='longueur du message à envoyer')
+    parser.add_argument('--message_count', type=int, help='Nombre de messages à envoyer')
+    parser.add_argument('--port', help='Port ou addresse (seulement pour ivy)')
+    parser.add_argument('--length',default='3000', help='longueur du message à envoyer (3000 carac par défaut)')
     parser.add_argument('--log_level', default='INFO', help='Niveau de configuration de la journalisation')
-
     param = parser.parse_args()
 
     # Configurer la journalisation
@@ -59,8 +57,8 @@ def main():
     queue = multiprocessing.Queue()
     logger.info('Démarrage du programme')
 
-    receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.test_type, param.port,param.length, queue, logger))
-    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.test_type, param.port, param.length, queue, logger))
+    receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger))
+    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger))
     receive_process.start()
     #sleep(2)
     send_process.start()

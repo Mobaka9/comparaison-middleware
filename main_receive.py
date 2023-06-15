@@ -12,7 +12,7 @@ from time import sleep
 
 
 
-def main_receive(protocol, message_count, test_type, port, length, queue, logger):
+def main_receive(protocol, message_count, port, length, queue, logger):
     
     com = "sub"
     if protocol == 'ivy':
@@ -38,7 +38,7 @@ def main_receive(protocol, message_count, test_type, port, length, queue, logger
     queue.put("RECEIVER_READY")
 
     receiver = MessageReceiver(protocol_obj, protocol,length)
-    receiver.receive_messages(message_count, test_type, queue)
+    receiver.receive_messages(message_count, queue)
     
     '''sender = MessageSender(protocol_obj)
     sender.send_messages(message_count)'''

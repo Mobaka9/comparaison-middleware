@@ -1,0 +1,4 @@
+ivy-python
+pyzmq
+kafka-python
+matplotlib

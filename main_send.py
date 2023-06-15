@@ -15,7 +15,7 @@ from time import sleep
 
 
 
-def main_send(protocol, message_count, test_type, port,length, queue, logger):
+def main_send(protocol, message_count, port,length, queue, logger):
 
 
 

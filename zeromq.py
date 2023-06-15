@@ -68,6 +68,5 @@ class ZeroMQProtocol(AbstractProtocol):
             self.send_end = queue.get()
 
         
-        self.socket.zmq_close()
         return(self.plt_data)
 
