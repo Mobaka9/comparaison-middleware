@@ -15,7 +15,7 @@ from time import sleep
 
 
 
-def main_send(protocol, message_count, port,length, queue, logger):
+def main_send(protocol, message_count, port,length, queue, logger, traitement):
 
 
 
@@ -63,6 +63,7 @@ def main_send(protocol, message_count, port,length, queue, logger):
             message = str(message_rand) + str(start_time)
             #message = "hello =" + str(start_time)
             protocol_obj.send_message(message)
+            sleep(traitement)
         #message = "last message =" + str(start_time)
         #protocol_obj.send_message(message, "10002")
 

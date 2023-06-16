@@ -29,6 +29,8 @@ def main():
     parser.add_argument('--port', help='Port ou addresse (seulement pour ivy)')
     parser.add_argument('--length',default='3000', help='longueur du message à envoyer (3000 carac par défaut)')
     parser.add_argument('--log_level', default='INFO', help='Niveau de configuration de la journalisation')
+    parser.add_argument('--sleep',default='0',type = float, help="Temps du sleep à mettre entre l'envoi de chaque message")
+
     param = parser.parse_args()
 
     # Configurer la journalisation
@@ -58,7 +60,7 @@ def main():
     logger.info('Démarrage du programme')
 
     receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger))
-    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger))
+    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger, param.sleep))
     receive_process.start()
     #sleep(2)
     send_process.start()
