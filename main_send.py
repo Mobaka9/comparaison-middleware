@@ -45,7 +45,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement):
 
     message = queue.get()
     if message == "RECEIVER_READY":
-        sleep(1)
+        sleep(2)
 
         #calcul des résulat
         length_of_string = int(length)
