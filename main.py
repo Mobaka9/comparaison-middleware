@@ -1,5 +1,6 @@
 import argparse
 import logging
+import platform
 import subprocess
 import sys
 import multiprocessing
@@ -45,16 +46,25 @@ def main():
 
     logger = logging.getLogger(__name__)
     
-    if param.protocol == "kafka":
-        kafka_processes = [
-            multiprocessing.Process(target=start_zookeeper),
-            multiprocessing.Process(target=start_kafka)
-        ]
-        for process in kafka_processes:
-            process.start()
-            sleep(3)
-        sleep(6)
 
+    if param.protocol == "kafka":
+        os = platform.system()
+
+        if os == "Darwin":
+            
+            kafka_processes = [
+                multiprocessing.Process(target=start_zookeeper),
+                multiprocessing.Process(target=start_kafka)
+            ]
+            for process in kafka_processes:
+                process.start()
+                sleep(3)
+            sleep(6)
+
+        elif os == "Linux":
+            os.system("systemctl start zookeeper")
+            os.system("systemctl start kafka")            
+            
 
     queue = multiprocessing.Queue()
     logger.info('Démarrage du programme')
@@ -73,9 +83,10 @@ def main():
     receive_process.kill()
     
     if param.protocol == "kafka":
-        logger.info('Arrêt des services Kafka')
-        for process in kafka_processes:
-            process.kill()
+        if os == "Darwin":
+            logger.info('Arrêt des services Kafka')
+            for process in kafka_processes:
+                process.kill()
 
     logger.info('Fin du programme')
 if __name__ == '__main__':
