@@ -71,13 +71,20 @@ def main():
 
     receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger))
     send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger, param.sleep))
-    receive_process.start()
+    '''receive_process.start()
     #sleep(2)
     send_process.start()
-
-
+    receive_process2 = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, 3000,param.length, queue, logger))
+    send_process2 = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, 3000, param.length, queue, logger, param.sleep))
+    
+    receive_process2.start()
+    send_process2.start()
+'''
     send_process.join()
     receive_process.join()
+
+#    send_process2.join()
+#   receive_process2.join()
 
     send_process.kill()
     receive_process.kill()

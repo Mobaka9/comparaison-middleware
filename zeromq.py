@@ -6,7 +6,7 @@ from time import sleep
 
 class ZeroMQProtocol(AbstractProtocol):
     def __init__(self, port, com, logger):
-        self.port = int(port)
+        self.port = port
         self.socket = None
         self.com = com
         self.plt_data = []

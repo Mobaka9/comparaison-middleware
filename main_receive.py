@@ -16,12 +16,11 @@ def main_receive(protocol, message_count, port, length, queue, logger):
     
     com = "sub"
     if protocol == 'ivy':
-        args = sys.argv[4:]
-        print(args)
         protocol_obj = IvyProtocol(port, logger)
         protocol_obj.initialize()
     elif protocol == 'zeromq':
-        port = sys.argv[4]
+        port = int(port)
+        #port +=1
         protocol_obj = ZeroMQProtocol(port, com,logger)
         protocol_obj.initialize()
     elif protocol == 'kafka':

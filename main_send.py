@@ -28,8 +28,8 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement):
         protocol_obj.initialize()
 
     elif protocol == 'zeromq':
-        port = sys.argv[4]
-        
+        port = int(port) 
+        #port+=1       
         protocol_obj = ZeroMQProtocol(port, com,logger)
         protocol_obj.initialize()
     elif protocol == 'kafka':
