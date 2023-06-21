@@ -19,6 +19,7 @@ class IvyProtocol(AbstractProtocol):
         self.plt_data = []
         self.wait = True
         self.logger = logger
+        self.pop_hello = True
         
     
     
@@ -91,13 +92,21 @@ class IvyProtocol(AbstractProtocol):
         self.plt_data.append(tmp)  
         self.id+=1
 
+    def onmsgproc2(self, agent, *larg):
+        t1= time.time()
+        self.msg = larg[self.id]
+        tmp = [self.id, larg[:20],t1, larg[-1]]
+        self.plt_data.append(tmp)
+        self.id+=1
+        self.pop_hello = False
+        
         
         
             
     def receive_message(self,message_count,queue):
         print("bind")
-        IvyBindMsg(self.onmsgproc, '(.*)')
-
+        #IvyBindMsg(self.onmsgproc, '(.*)')
+        IvyBindMsg(self.onmsgproc2, 'flag0=(\S*) flag1=(\S*) flag2=(\S*) flag3=(\S*) flag4=(\S*) flag5=(\S*) flag6=(\S*) flag7=(\S*) flag8=(\S*) flag9=(\S*) flag10=(\S*) flag11=(\S*) flag12=(\S*) flag13=(\S*) flag14=(\S*) flag15=(\S*) flag16=(\S*) flag17=(\S*) flag18=(\S*) flag19=(\S*) flag20=(\S*) flag21=(\S*) flag22=(\S*) flag23=(\S*) flag24=(\S*) flag25=(\S*) flag26=(\S*) flag27=(\S*) flag28=(\S*) flag29=(\S*) flag30=(\S*) flag31=(\S*) flag32=(\S*) flag33=(\S*) flag34=(\S*) flag35=(\S*) flag36=(\S*) flag37=(\S*) flag38=(\S*) flag39=(\S*) flag40=(\S*) flag41=(\S*) flag42=(\S*) flag43=(\S*) flag44=(\S*) flag45=(\S*) flag46=(\S*) flag47=(\S*) flag48=(\S*) flag49=(\S*) #(\S*)')
         queue.put("RECEIVER_READY")
 
         print(queue.get())
@@ -107,5 +116,9 @@ class IvyProtocol(AbstractProtocol):
             print(self.send_end)
 
         
-        self.plt_data.pop(0)
+        if self.pop_hello:
+            self.plt_data.pop(0)
         return self.plt_data
+    
+    def stopsocket(self):
+        IvyStop()

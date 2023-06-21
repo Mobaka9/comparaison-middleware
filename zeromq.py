@@ -8,6 +8,7 @@ class ZeroMQProtocol(AbstractProtocol):
     def __init__(self, port, com, logger):
         self.port = port
         self.socket = None
+        self.context= None
         self.com = com
         self.plt_data = []
         self.id = 0
@@ -18,9 +19,9 @@ class ZeroMQProtocol(AbstractProtocol):
         self.logger = logger
 
     def initialize(self):
-        context = zmq.Context()
+        self.context = zmq.Context()
         if self.com == "PUB":
-            self.socket = context.socket(zmq.PUB)
+            self.socket = self.context.socket(zmq.PUB)
             self.socket.setsockopt(zmq.SNDHWM, 2000000)
             self.socket.bind("tcp://*:%s" % self.port)
             
@@ -28,7 +29,7 @@ class ZeroMQProtocol(AbstractProtocol):
             #sleep(3)
 
         else:
-            self.socket = context.socket(zmq.SUB)
+            self.socket = self.context.socket(zmq.SUB)
             self.socket.setsockopt(zmq.RCVHWM, 2000000) 
             self.socket.connect("tcp://localhost:%s" % self.port)
             
@@ -70,3 +71,12 @@ class ZeroMQProtocol(AbstractProtocol):
         
         return(self.plt_data)
 
+    def stopsocket(self):
+        try:
+            self.socket.close()
+
+        except:
+            pass # log or print any EXC-case here, as needed
+
+        finally:
+            self.context.term()

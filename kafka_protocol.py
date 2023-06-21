@@ -62,3 +62,9 @@ class KafkaProtocol(AbstractProtocol):
         while(self.send_end != "LAST_MESSAGE"):
             self.send_end = queue.get()      
         return self.plt_data
+
+    def stopsocket(self):
+        if self.com == "PUB":
+            self.kafka_producer.close()
+        else: 
+            self.consumer.close()

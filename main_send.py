@@ -15,7 +15,7 @@ from time import sleep
 
 
 
-def main_send(protocol, message_count, port,length, queue, logger, traitement):
+def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count):
 
 
 
@@ -47,29 +47,29 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement):
     if message == "RECEIVER_READY":
         sleep(2)
 
-        #calcul des résulat
         length_of_string = int(length)
-        message_rand = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+"="
+        message_rand=""
+        if(flag):
+            for j in range(flag_count):
+                message_rand = message_rand+"flag"+str(j)+"="+''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+" "
 
-        #if test_type == "total":
+            message_rand = message_rand+"#"
+        else:
+            message_rand = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+"#"
 
 
 
-    #elif test_type == "graph":
         for i in range(message_count):
-            #print(i)
-
             start_time = time.time()
             message = str(message_rand) + str(start_time)
             #message = "hello =" + str(start_time)
+            print(message)
             protocol_obj.send_message(message)
             sleep(traitement)
-        #message = "last message =" + str(start_time)
-        #protocol_obj.send_message(message, "10002")
 
-            
-        #else :
 
-    
+        
         for i in range(100):
             queue.put("LAST_MESSAGE")
+        if protocol == "ivy":
+            protocol_obj.stopsocket()
