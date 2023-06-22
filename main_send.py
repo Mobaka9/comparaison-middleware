@@ -69,7 +69,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
 
 
         
-        for i in range(100):
+        for i in range(1000):
             queue.put("LAST_MESSAGE")
         if protocol == "ivy":
             protocol_obj.stopsocket()

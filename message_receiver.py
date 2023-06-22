@@ -52,7 +52,8 @@ class MessageReceiver:
                             print(contenus)
                     print("Temps total de communication : ", (time.time() - start_time))
                 else:
-                    print("Temps total de communication : ", (float(self.data[0][-2]) - float(self.data[0][-1])))
+                    
+                    print("Temps total de communication : ", (time.time() - float(self.data[0][-1])))
 
                     
 
