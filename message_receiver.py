@@ -1,7 +1,9 @@
+import re
 from time import sleep, time
 import time
 import matplotlib.pyplot as plt
 from statistics import mean
+
 
 
 class MessageReceiver:
@@ -36,6 +38,7 @@ class MessageReceiver:
             self.data = self.protocol_obj.receive_message(message_count,queue)
             self.protocol_obj.stopsocket()
             print(self.data)
+            print(len(self.data))
 
             if(flag):
                 if self.protocol != "ivy":
@@ -43,13 +46,24 @@ class MessageReceiver:
                         start_time = float(self.data[0][1].split("#")[1])
 
                         if self.data : 
-                            message, t0 = self.data[i][1].split("#")
-                            t0= float(t0)
-                            elements = message.split(" ")
+                            
+                            '''elements = message.split(" ")
                             elements.pop()
                             print(elements)
                             contenus = [element.split("=")[1].strip() for element in elements]
-                            print(contenus)
+                            print(contenus)'''
+                            pattern = r'flag0=(\S*) flag1=(\S*) flag2=(\S*) flag3=(\S*) flag4=(\S*) #(\S*)'
+                            match = re.search(pattern, self.data[i][1])
+                            
+                            if match:
+                                values = match.groups()
+                                values = values[:-1]
+                                print(values)
+                            else:
+                                print("no match")
+                            message, t0 = self.data[i][1].split("#")
+                            t0= float(t0)
+                            
                     print("Temps total de communication : ", (time.time() - start_time))
                 else:
                     

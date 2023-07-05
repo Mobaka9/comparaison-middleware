@@ -22,7 +22,7 @@ class ZeroMQProtocol(AbstractProtocol):
         self.context = zmq.Context()
         if self.com == "PUB":
             self.socket = self.context.socket(zmq.PUB)
-            self.socket.setsockopt(zmq.SNDHWM, 2000000)
+            self.socket.setsockopt(zmq.SNDHWM,1000000)
             self.socket.bind("tcp://*:%s" % self.port)
             
 
@@ -30,7 +30,7 @@ class ZeroMQProtocol(AbstractProtocol):
 
         else:
             self.socket = self.context.socket(zmq.SUB)
-            self.socket.setsockopt(zmq.RCVHWM, 2000000) 
+            self.socket.setsockopt(zmq.RCVHWM, 1000000) 
             self.socket.connect("tcp://localhost:%s" % self.port)
             
         
@@ -53,6 +53,7 @@ class ZeroMQProtocol(AbstractProtocol):
         self.socket.setsockopt_string(zmq.SUBSCRIBE, "10002")
 
         for i in range(message_count):
+            #print(i)
             string = self.socket.recv()
             t1 = time.time()
             #topic, messagedata = string.split()

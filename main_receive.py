@@ -6,6 +6,7 @@ from zeromq import ZeroMQProtocol
 from ivy_protocol import IvyProtocol
 from kafka_protocol import KafkaProtocol
 from message_receiver import MessageReceiver
+import multiprocessing
 
 from time import sleep
 
@@ -32,10 +33,13 @@ def main_receive(protocol, message_count, port, length, queue, logger, flag):
 
     logger.info('Démarrage du receveur')
 
-
     #envoie de message aà l'autre process pour signaler que le receveur est prêt
     queue.put("RECEIVER_READY")
+   
 
+        
+        
+    
     receiver = MessageReceiver(protocol_obj, protocol,length, protocol)
     receiver.receive_messages(message_count, queue, flag)
     

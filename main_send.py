@@ -43,9 +43,15 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     logger.info('Démarrage du sender')
     
 
-    message = queue.get()
-    if message == "RECEIVER_READY":
+    recvrdy=""
+    while(recvrdy != "RECEIVER_READY"):
+            print(recvrdy)
+            recvrdy = queue.get()
+            print(recvrdy)
+
+    if recvrdy == "RECEIVER_READY":
         sleep(2)
+
 
         length_of_string = int(length)
         message_rand=""
@@ -63,7 +69,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             start_time = time.time()
             message = str(message_rand) + str(start_time)
             #message = "hello =" + str(start_time)
-            print(message)
+            #print(message)
             protocol_obj.send_message(message)
             sleep(traitement)
 
