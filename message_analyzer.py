@@ -1,3 +1,4 @@
+import datetime
 import re
 from time import sleep, time
 import time
@@ -32,13 +33,11 @@ class MessageReceiver:
         plt.close()  # Ferme la figure pour libérer les ressources
 
         
-    def receive_messages(self, message_count, queue, flag,nmbre_rec,total_rec, multi_rec):
-        
-            print("hey")
-            self.data = self.protocol_obj.receive_message(message_count,queue,total_rec)
+    def receive_messages(self, message_count, queue, flag,nmbre_rec,total_rec, multi_rec,direct_msg):
+            self.data = self.protocol_obj.receive_message(message_count,queue,total_rec,direct_msg)
             self.protocol_obj.stopsocket()
             #print(self.data)
-            print(len(self.data))
+            #print(len(self.data))
 
             if(flag):
                 if self.protocol != "ivy":
@@ -63,11 +62,21 @@ class MessageReceiver:
                                 print("no match")
                             message, t0 = self.data[i][1].split("#")
                             t0= float(t0)
-                            
-                    print("Temps total de communication : ", (time.time() - start_time))
-                else:
                     
-                    print("Temps total de communication : ", (time.time() - float(self.data[0][-1])))
+                    end_time=time.time()
+                    maintenant = datetime.datetime.now()
+                    # Formater la date et l'heure selon le format souhaité
+                    format_date_heure = "%d/%m/%Y %H:%M:%S"
+                    date_heure_formatee = maintenant.strftime(format_date_heure)
+                    print("Temps total de communication  : "+str(date_heure_formatee), (end_time - start_time))
+                else:
+                    end_time=time.time()
+                    maintenant = datetime.datetime.now()
+                    # Formater la date et l'heure selon le format souhaité
+                    format_date_heure = "%d/%m/%Y %H:%M:%S"
+                    date_heure_formatee = maintenant.strftime(format_date_heure)
+                    print("Temps total de communication  : "+str(date_heure_formatee), (end_time - start_time))
+                    print("Temps total de communication : ", (end_time - float(self.data[0][-1])))
 
                     
 
@@ -80,9 +89,16 @@ class MessageReceiver:
                         self.plt_data.append(time_interval)
                 if multi_rec:
                     if(nmbre_rec == total_rec-1):
-                        print("Temps total de communication de tous les receveurs : ", (self.data[-1][2] - start_time))
-                else: 
-                    print("Temps total de communication : ", (self.data[-1][2] - start_time))
+                        maintenant = datetime.datetime.now()
+                        format_date_heure = "%d/%m/%Y %H:%M:%S"
+                        date_heure_formatee = maintenant.strftime(format_date_heure)
+                        print("Temps total de communication de tous les receveurs  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time))
+                else:
+                    maintenant = datetime.datetime.now()
+                    format_date_heure = "%d/%m/%Y %H:%M:%S"
+                    date_heure_formatee = maintenant.strftime(format_date_heure)
+                    print("Temps total de communication  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time)) 
+
 
 
                 self.draw_graph(self.bus, message_count, multi_rec) 

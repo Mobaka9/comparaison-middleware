@@ -13,7 +13,7 @@ from time import sleep
 
 
 
-def main_receive(protocol, message_count, port, length, queue, logger, flag, nmbre_rec, total_rec, multi_rec):
+def main_receive(protocol, message_count, port, length, queue, logger, flag, nmbre_rec, total_rec, multi_rec,direct_msg):
     
     
     com = "sub"
@@ -43,7 +43,7 @@ def main_receive(protocol, message_count, port, length, queue, logger, flag, nmb
         
     
     receiver = MessageReceiver(protocol_obj, protocol,length)
-    receiver.receive_messages(message_count, queue, flag,nmbre_rec, total_rec, multi_rec)
+    receiver.receive_messages(message_count, queue, flag,nmbre_rec, total_rec, multi_rec,direct_msg)
     
     '''sender = MessageSender(protocol_obj)
     sender.send_messages(message_count)'''

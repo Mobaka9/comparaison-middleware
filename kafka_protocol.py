@@ -45,9 +45,8 @@ class KafkaProtocol(AbstractProtocol):
             print(str(ex))
 
        
-    def receive_message(self, message_count, queue):        
+    def receive_message(self,message_count,queue,total_rec,direct_msg):        
 
-        queue.put("RECEIVER_READY")
         for msg in self.consumer:
             if msg.topic == '10001':
                 self.id += 1

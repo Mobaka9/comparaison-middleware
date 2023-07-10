@@ -44,7 +44,7 @@ class ZeroMQProtocol(AbstractProtocol):
 
 
 
-    def receive_message(self,message_count,queue):
+    def receive_message(self,message_count,queue,total_rec,direct_msg):
         #initialisation
 
         topicfilter = "10001"

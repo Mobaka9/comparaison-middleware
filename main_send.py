@@ -15,7 +15,7 @@ from time import sleep
 
 
 
-def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count, nbr_processes):
+def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count, nbr_processes,direct_msg):
 
 
 
@@ -64,7 +64,15 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             message_rand = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+"#"
 
 
-
+        if protocol == "ivy":
+            if direct_msg:
+                for i in range(message_count):
+                    start_time = time.time()
+                    message = str(message_rand) + str(start_time)
+                    #message = "hello =" + str(start_time)
+                    #print(message)
+                    protocol_obj.send_direct_message(message)
+                    sleep(traitement)
         for i in range(message_count):
             start_time = time.time()
             message = str(message_rand) + str(start_time)
