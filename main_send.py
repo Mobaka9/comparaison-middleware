@@ -15,7 +15,7 @@ from time import sleep
 
 
 
-def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count):
+def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count, nbr_processes):
 
 
 
@@ -24,7 +24,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     if protocol == 'ivy':
         args = port
         print(args)
-        protocol_obj = IvyProtocol(args,logger)
+        protocol_obj = IvyProtocol(args,logger,com)
         protocol_obj.initialize()
 
     elif protocol == 'zeromq':
@@ -44,12 +44,12 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     
 
     recvrdy=""
-    while(recvrdy != "RECEIVER_READY"):
-            print(recvrdy)
+    while(not (str(nbr_processes-1) in recvrdy) ):
+            #print(recvrdy)
             recvrdy = queue.get()
-            print(recvrdy)
+            #print(recvrdy)
 
-    if recvrdy == "RECEIVER_READY":
+    if True:
         sleep(2)
 
 
@@ -72,7 +72,6 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             #print(message)
             protocol_obj.send_message(message)
             sleep(traitement)
-
 
         
         for i in range(1000):

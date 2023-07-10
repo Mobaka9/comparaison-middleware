@@ -34,6 +34,8 @@ def main():
     parser.add_argument('--sleep',default='0',type = float, help="Temps du sleep à mettre entre l'envoi de chaque message")
     parser.add_argument('--flag', action='store_true', help="activer les flags pour simuler l'utilisation de regexp")
     parser.add_argument('--flag_count', default = 1, type=int, help='Nombre de flags à envoyer')
+    parser.add_argument('--nbr_processes', default = 1, type=int, help='Nombre de receveurs créés')
+
 
     param = parser.parse_args()
 
@@ -49,8 +51,9 @@ def main():
     )
 
     logger = logging.getLogger(__name__)
-    
-
+    multi_recv = False
+    if param.nbr_processes != 1:
+        multi_recv = True
     if param.protocol == "kafka":
         my_os = platform.system()
 
@@ -72,11 +75,14 @@ def main():
 
     queue = multiprocessing.Queue()
     logger.info('Démarrage du programme')
-
-    receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger, param.flag))
-    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger, param.sleep, param.flag, param.flag_count))
-    
-    receive_process.start()
+    nmbre_rec= param.nbr_processes
+    recv_processes=[]
+    for i in range(nmbre_rec):
+        receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger, param.flag, i,param.nbr_processes, multi_recv))
+        recv_processes.append(receive_process)
+    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger, param.sleep, param.flag, param.flag_count, param.nbr_processes))
+    for i in range(nmbre_rec):
+        recv_processes[i].start()
     #sleep(2)
     send_process.start()
     '''
