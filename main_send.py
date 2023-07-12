@@ -6,6 +6,7 @@ import time
 from ivy.std_api import *
 import sys
 import getopt
+from ivy_direct import IvyDirectProtocol
 from ivy_protocol import IvyProtocol
 from zeromq import ZeroMQProtocol
 from kafka_protocol import KafkaProtocol
@@ -23,9 +24,12 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     com = "PUB"
     if protocol == 'ivy':
         args = port
-        print(args)
-        protocol_obj = IvyProtocol(args,logger,com)
-        protocol_obj.initialize()
+        if direct_msg:
+            protocol_obj = IvyDirectProtocol(args,logger,com)
+            protocol_obj.initialize()
+        else:
+            protocol_obj = IvyProtocol(args,logger,com)
+            protocol_obj.initialize()
 
     elif protocol == 'zeromq':
         port = int(port) 
@@ -64,15 +68,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             message_rand = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+"#"
 
 
-        if protocol == "ivy":
-            if direct_msg:
-                for i in range(message_count):
-                    start_time = time.time()
-                    message = str(message_rand) + str(start_time)
-                    #message = "hello =" + str(start_time)
-                    #print(message)
-                    protocol_obj.send_direct_message(message)
-                    sleep(traitement)
+        
         for i in range(message_count):
             start_time = time.time()
             message = str(message_rand) + str(start_time)

@@ -25,7 +25,7 @@ class MessageReceiver:
         title = "temps individuels d'émission de "+str(message_count)+" messages de "+str(self.length)+" caractères avec "+str(protocole)
         plt.title(title, loc='center', wrap=True)
         if not multi_rec:
-            print("La moyenne est", mean(self.plt_data))
+            print("La moyenne est ", mean(self.plt_data))
         chemin_dossier = "graphiques"
         nom_fichier = 'graph '+str(self.bus)+' '+str(message_count)+'msgs de '+str(self.length)+' carac.png'
         chemin_complet = chemin_dossier + "/" + nom_fichier
@@ -34,7 +34,7 @@ class MessageReceiver:
 
         
     def receive_messages(self, message_count, queue, flag,nmbre_rec,total_rec, multi_rec,direct_msg):
-            self.data = self.protocol_obj.receive_message(message_count,queue,total_rec,direct_msg)
+            self.data = self.protocol_obj.receive_message(message_count,queue,total_rec,direct_msg,flag)
             self.protocol_obj.stopsocket()
             #print(self.data)
             #print(len(self.data))
@@ -75,7 +75,7 @@ class MessageReceiver:
                     # Formater la date et l'heure selon le format souhaité
                     format_date_heure = "%d/%m/%Y %H:%M:%S"
                     date_heure_formatee = maintenant.strftime(format_date_heure)
-                    print("Temps total de communication  : "+str(date_heure_formatee), (end_time - start_time))
+                    print("Temps total de communication : "+str(date_heure_formatee), (end_time - start_time))
                     print("Temps total de communication : ", (end_time - float(self.data[0][-1])))
 
                     

@@ -45,7 +45,7 @@ class KafkaProtocol(AbstractProtocol):
             print(str(ex))
 
        
-    def receive_message(self,message_count,queue,total_rec,direct_msg):        
+    def receive_message(self,message_count,queue,total_rec,direct_msg,flag):        
 
         for msg in self.consumer:
             if msg.topic == '10001':
