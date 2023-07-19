@@ -25,7 +25,6 @@ class IngescapeProtocol(AbstractProtocol):
         self.client=""
         
     
-    
     def string_input_callback(self,iop_type, iop_name, value_type, value, my_data):
         #igs.output_set_int("out", value)
         print("callback")
@@ -35,46 +34,31 @@ class IngescapeProtocol(AbstractProtocol):
         tmp = [self.id, value, t1]
         self.plt_data.append(tmp)  
         self.id+=1
-    def on_agent_event_callback(event, uuid, name, event_type, my_data):
-
-        if event_type == igs.PEER_ENTERED:
-
-            print("PEER_ENTERED")
-
-        elif event_type == igs.PEER_EXITED:
-
-            print("PEER_EXITED")
-
-        elif event_type == igs.AGENT_ENTERED:
-
-            print("AGENT_ENTERED")
-
-        elif event_type == igs.AGENT_UPDATED_DEFINITION:
-
-            print("AGENT_UPDATED_DEFINITION")
-
-        elif event_type == igs.AGENT_KNOWS_US:
-
-            print("AGENT_KNOWS_US")
-
-        elif event_type == igs.AGENT_EXITED:
-
-            print("AGENT_EXITED")
-        elif event_type == igs.AGENT_UPDATED_MAPPING:
-
-            print("AGENT_UPDATED_MAPPING")
-
-        elif event_type == igs.AGENT_WON_ELECTION:
-
-            print("AGENT_WON_ELECTION")
-
-        elif event_type == igs.AGENT_LOST_ELECTION:
-
-            print("AGENT_LOST_ELECTION")
-
+        
+        
+        
+    def on_agent_event_callback(self, event, uuid, name, event_data, my_data):
+        if event == igs.PEER_ENTERED:
+            print(f"PEER_ENTERED about {name}")
+        elif event == igs.PEER_EXITED:
+            print(f"PEER_EXITED about {name}")
+        elif event == igs.AGENT_ENTERED:
+            print(f"AGENT_ENTERED about {name}")
+        elif event == igs.AGENT_UPDATED_DEFINITION:
+            print(f"AGENT_UPDATED_DEFINITION about {name}")
+        elif event == igs.AGENT_KNOWS_US:
+            print(f"AGENT_KNOWS_US about {name}")
+        elif event == igs.AGENT_EXITED:
+            print(f"AGENT_EXITED about {name}")
+        elif event == igs.AGENT_UPDATED_MAPPING:
+            print(f"AGENT_UPDATED_MAPPING about {name}")
+        elif event == igs.AGENT_WON_ELECTION:
+            print(f"AGENT_WON_ELECTION about {name}")
+        elif event == igs.AGENT_LOST_ELECTION:
+            print(f"AGENT_LOST_ELECTION about {name}")
         else:
-
-            print("UNKNOWN")
+            print(f"UNKNOWN event about {name}")
+        
         
     def initialize(self):
         
