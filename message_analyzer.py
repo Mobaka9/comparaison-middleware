@@ -37,7 +37,7 @@ class MessageReceiver:
             self.data = self.protocol_obj.receive_message(message_count,queue,total_rec,direct_msg,flag)
             self.protocol_obj.stopsocket()
             #print(self.data)
-            #print(len(self.data))
+            print(len(self.data))
 
             if(flag):
                 if self.protocol != "ivy":
@@ -76,7 +76,7 @@ class MessageReceiver:
                     format_date_heure = "%d/%m/%Y %H:%M:%S"
                     date_heure_formatee = maintenant.strftime(format_date_heure)
                     print("Temps total de communication : "+str(date_heure_formatee), (end_time - start_time))
-                    print("Temps total de communication : ", (end_time - float(self.data[0][-1])))
+                    #print("Temps total de communication : ", (end_time - float(self.data[0][-1])))
 
                     
 
@@ -92,6 +92,7 @@ class MessageReceiver:
                         maintenant = datetime.datetime.now()
                         format_date_heure = "%d/%m/%Y %H:%M:%S"
                         date_heure_formatee = maintenant.strftime(format_date_heure)
+                        
                         print("Temps total de communication de tous les receveurs  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time))
                 else:
                     maintenant = datetime.datetime.now()

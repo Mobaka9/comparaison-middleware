@@ -2,6 +2,7 @@ import zmq
 from ivy.std_api import *
 import sys
 from abstract_protocol import AbstractProtocol
+from ingescape_protocol import IngescapeProtocol
 from zeromq import ZeroMQProtocol
 from ivy_protocol import IvyProtocol
 from kafka_protocol import KafkaProtocol
@@ -13,7 +14,7 @@ from time import sleep
 
 
 
-def main_receive(protocol, message_count, port, length, queue, logger, flag, nmbre_rec, total_rec, multi_rec,direct_msg):
+def main_receive(protocol, message_count, port, length, queue, logger, flag, nmbre_rec, total_rec, multi_rec,direct_msg,device):
     
     
     com = "sub"
@@ -27,6 +28,9 @@ def main_receive(protocol, message_count, port, length, queue, logger, flag, nmb
         protocol_obj.initialize()
     elif protocol == 'kafka':
         protocol_obj = KafkaProtocol(com,logger)
+        protocol_obj.initialize()
+    elif protocol == 'ingescape':
+        protocol_obj = IngescapeProtocol(com,port,device)
         protocol_obj.initialize()
     else:
         print("Unsupported protocol: "+str(protocol))

@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 import random
 import string
 import time
+from ingescape_protocol import IngescapeProtocol
 from ivy.std_api import *
 import sys
 import getopt
@@ -16,7 +17,7 @@ from time import sleep
 
 
 
-def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count, nbr_processes,direct_msg):
+def main_send(protocol, message_count, port,length, queue, logger, traitement, flag, flag_count, nbr_processes, direct_msg, device):
 
 
 
@@ -38,6 +39,9 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
         protocol_obj.initialize()
     elif protocol == 'kafka':
         protocol_obj = KafkaProtocol(com,logger)
+        protocol_obj.initialize()
+    elif protocol == 'ingescape':
+        protocol_obj = IngescapeProtocol(com,port,device)
         protocol_obj.initialize()
         
     else:

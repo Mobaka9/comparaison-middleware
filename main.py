@@ -36,6 +36,7 @@ def main():
     parser.add_argument('--flag_count', default = 1, type=int, help='Nombre de flags à envoyer')
     parser.add_argument('--nbr_processes', default = 1, type=int, help='Nombre de receveurs créés')
     parser.add_argument('--direct_msg', action='store_true', help="envoyer des messages ivy avec ivydirectmsg")
+    parser.add_argument('--device', default=None,help='nom du peripherique réseau utilisé pour ingescape')
 
 
 
@@ -80,9 +81,9 @@ def main():
     nmbre_rec= param.nbr_processes
     recv_processes=[]
     for i in range(nmbre_rec):
-        receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger, param.flag, i,param.nbr_processes, multi_recv,param.direct_msg))
+        receive_process = multiprocessing.Process(target=main_receive, args=(param.protocol, param.message_count, param.port,param.length, queue, logger, param.flag, i,param.nbr_processes, multi_recv,param.direct_msg, param.device))
         recv_processes.append(receive_process)
-    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger, param.sleep, param.flag, param.flag_count, param.nbr_processes,param.direct_msg))
+    send_process = multiprocessing.Process(target=main_send, args=(param.protocol, param.message_count, param.port, param.length, queue, logger, param.sleep, param.flag, param.flag_count, param.nbr_processes, param.direct_msg, param.device))
     for i in range(nmbre_rec):
         recv_processes[i].start()
     #sleep(2)
