@@ -18,7 +18,7 @@ def string_input_callback(iop_type, iop_name, value_type, value, my_data):
         t1= time.time()
         tmp = [callback_self.id, value, t1]
         callback_self.plt_data.append(tmp) 
-        #print(f"receiving message number {callback_self.id}") 
+        print(f"receiving message number {callback_self.id}") 
         callback_self.id+=1
     else:
         print("error callback_self")

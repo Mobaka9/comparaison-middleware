@@ -10,15 +10,6 @@ from main_receive import main_receive
 from time import sleep
 
 
-def start_zookeeper():
-    subprocess.run(['zookeeper-server-start', '/usr/local/etc/kafka/zookeeper.properties'])
-
-
-def start_kafka():
-    subprocess.run(['kafka-server-start', '/usr/local/etc/kafka/server.properties'])
-
-
-
 def main():
     
 
