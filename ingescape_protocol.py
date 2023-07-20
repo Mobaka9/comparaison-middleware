@@ -17,7 +17,8 @@ def string_input_callback(iop_type, iop_name, value_type, value, my_data):
         #print("hey")
         t1= time.time()
         tmp = [callback_self.id, value, t1]
-        callback_self.plt_data.append(tmp)  
+        callback_self.plt_data.append(tmp) 
+        print(f"receiving message number {callback_self.id}") 
         callback_self.id+=1
     else:
         print("error callback_self")
@@ -92,6 +93,9 @@ class IngescapeProtocol(AbstractProtocol):
             igs.log_set_file(True, None)
             igs.definition_set_version("1.0")
             igs.observe_agent_events(on_agent_event_callback, self)
+            igs.net_set_high_water_marks(0)
+            igs.net_raise_sockets_limit()
+            
             
             if self.com=="PUB":
                 igs.output_create("out", igs.STRING_T, None)
@@ -119,7 +123,7 @@ class IngescapeProtocol(AbstractProtocol):
         #sleep(5)
         
         while len(self.plt_data) != message_count:
-            print(len(self.plt_data))
+            
             pass   
         print(self.plt_data)
         print(len(self.plt_data))

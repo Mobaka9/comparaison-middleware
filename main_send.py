@@ -52,10 +52,10 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     
 
     recvrdy=""
-    while(not (str(nbr_processes-1) in recvrdy) ):
-            #print(recvrdy)
-            recvrdy = queue.get()
-            #print(recvrdy)
+    # while(not (str(nbr_processes-1) in recvrdy) ):
+    #         print(recvrdy)
+    #         recvrdy = queue.get()
+    #         print(recvrdy)
 
     if True:
         sleep(2)
@@ -72,17 +72,20 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             message_rand = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length_of_string))+"#"
 
 
-        
         for i in range(message_count):
             start_time = time.time()
             message = str(message_rand) + str(start_time)
             #message = "hello =" + str(start_time)
             #print(message)
             protocol_obj.send_message(message)
+            print(f"sending message n:{i}")
             sleep(traitement)
 
         
+        print("envoi termine")
+        sleep(20)
+        protocol_obj.stopsocket()
         for i in range(1000):
             queue.put("LAST_MESSAGE")
-        if protocol == "ivy":
+        if protocol == "ivy" :
             protocol_obj.stopsocket()
