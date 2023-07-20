@@ -9,7 +9,47 @@ import sys
 import time
 from abstract_protocol import AbstractProtocol
 
+def string_input_callback(iop_type, iop_name, value_type, value, my_data):
+    #igs.output_set_int("out", value)
+    #igs.info(f"received {value}")
+    callback_self = my_data
+    if isinstance(callback_self,IngescapeProtocol):
+        #print("hey")
+        t1= time.time()
+        tmp = [callback_self.id, value, t1]
+        callback_self.plt_data.append(tmp)  
+        callback_self.id+=1
+    else:
+        print("error callback_self")
 
+def on_agent_event_callback(event, uuid, name, event_data, my_data):
+    callback_self=my_data
+    if isinstance(callback_self,IngescapeProtocol):
+        
+        if event == igs.PEER_ENTERED:
+            print(f"PEER_ENTERED about {name}")
+        elif event == igs.PEER_EXITED:
+            print(f"PEER_EXITED about {name}")
+        elif event == igs.AGENT_ENTERED:
+            print(f"AGENT_ENTERED about {name}")
+        elif event == igs.AGENT_UPDATED_DEFINITION:
+            print(f"AGENT_UPDATED_DEFINITION about {name}")
+        elif event == igs.AGENT_KNOWS_US:
+            print(f"AGENT_KNOWS_US about {name}")
+            #if callback_self =="SUB":
+                
+        elif event == igs.AGENT_EXITED:
+            print(f"AGENT_EXITED about {name}")
+        elif event == igs.AGENT_UPDATED_MAPPING:
+            print(f"AGENT_UPDATED_MAPPING about {name}")
+        elif event == igs.AGENT_WON_ELECTION:
+            print(f"AGENT_WON_ELECTION about {name}")
+        elif event == igs.AGENT_LOST_ELECTION:
+            print(f"AGENT_LOST_ELECTION about {name}")
+        else:
+            print(f"UNKNOWN event about {name}")
+    else:
+        print("error callback event")
 
 class IngescapeProtocol(AbstractProtocol):
     
@@ -23,41 +63,7 @@ class IngescapeProtocol(AbstractProtocol):
         self.device=device
         self.com = com
         self.client=""
-        
-    
-    def string_input_callback(self,iop_type, iop_name, value_type, value, my_data):
-        #igs.output_set_int("out", value)
-        print("callback")
-        igs.info(f"received {value}")
-        t1= time.time()
-        print("callback")
-        tmp = [self.id, value, t1]
-        self.plt_data.append(tmp)  
-        self.id+=1
-        
-        
-        
-    def on_agent_event_callback(self, event, uuid, name, event_data, my_data):
-        if event == igs.PEER_ENTERED:
-            print(f"PEER_ENTERED about {name}")
-        elif event == igs.PEER_EXITED:
-            print(f"PEER_EXITED about {name}")
-        elif event == igs.AGENT_ENTERED:
-            print(f"AGENT_ENTERED about {name}")
-        elif event == igs.AGENT_UPDATED_DEFINITION:
-            print(f"AGENT_UPDATED_DEFINITION about {name}")
-        elif event == igs.AGENT_KNOWS_US:
-            print(f"AGENT_KNOWS_US about {name}")
-        elif event == igs.AGENT_EXITED:
-            print(f"AGENT_EXITED about {name}")
-        elif event == igs.AGENT_UPDATED_MAPPING:
-            print(f"AGENT_UPDATED_MAPPING about {name}")
-        elif event == igs.AGENT_WON_ELECTION:
-            print(f"AGENT_WON_ELECTION about {name}")
-        elif event == igs.AGENT_LOST_ELECTION:
-            print(f"AGENT_LOST_ELECTION about {name}")
-        else:
-            print(f"UNKNOWN event about {name}")
+
         
         
     def initialize(self):
@@ -85,13 +91,13 @@ class IngescapeProtocol(AbstractProtocol):
             igs.log_set_console(True)
             igs.log_set_file(True, None)
             igs.definition_set_version("1.0")
-            igs.observe_agent_events(self.on_agent_event_callback, None)
+            igs.observe_agent_events(on_agent_event_callback, self)
             
             if self.com=="PUB":
                 igs.output_create("out", igs.STRING_T, None)
             else:
                 igs.input_create("in", igs.STRING_T, None)
-                igs.observe_input("in", self.string_input_callback, None)
+                igs.observe_input("in", string_input_callback, self)
                 igs.mapping_add("in", "Sender", "out")
             
             igs.start_with_device(self.device, int(self.port))
@@ -111,23 +117,21 @@ class IngescapeProtocol(AbstractProtocol):
             
 
         #sleep(5)
-        print("hello")
-        print(self.plt_data)
-        while self.id!=5:
+        
+        while len(self.plt_data) != message_count:
+            print(len(self.plt_data))
             pass   
         print(self.plt_data)
+        print(len(self.plt_data))
 
         # while(self.send_end != "LAST_MESSAGE"):
         #     print(self.send_end)
         #     self.send_end = queue.get()
         #     print(self.send_end)
 
-        # if not direct_msg:
-        #     if self.pop_hello:
-        #         self.plt_data= self.plt_data[total_rec:]
-        # print(self.plt_data
+        return self.plt_data
     
     def stopsocket(self):
-        # igs.stop()
+        igs.stop()
         print("stop socket ingescape")
         pass

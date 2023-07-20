@@ -53,8 +53,8 @@ class IvyProtocol(AbstractProtocol):
                 '''
                 print(fmt % lpathitem[-1])
             
-            def oncxproc(agent, connected):
-                if connected == IvyApplicationDisconnected:
+            def oncxproc(agent, event_type):
+                if event_type == IvyApplicationDisconnected:
                     lprint('Ivy application %r was disconnected', agent)
                 else:
                     lprint('Ivy application %r was connected', agent)
