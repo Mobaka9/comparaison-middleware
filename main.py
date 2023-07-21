@@ -38,7 +38,7 @@ def main():
     parser.add_argument('--direct_msg', action='store_true', help="envoyer des messages ivy avec ivydirectmsg")
     parser.add_argument('--device', default=None,help='nom du peripherique réseau utilisé pour ingescape')
 
-
+#n
 
     param = parser.parse_args()
 
