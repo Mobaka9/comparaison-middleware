@@ -137,10 +137,10 @@ class IvyProtocol(AbstractProtocol):
             print(self.send_end)
             self.send_end = queue.get()
             print(self.send_end)
-        print(self.plt_data)
-        print(self.plt_data)
-        if self.pop_hello:
-            self.plt_data= self.plt_data[total_rec:]
+        print(f"nbre de rec {total_rec}")
+        #print(self.plt_data)
+        # if self.pop_hello:
+        #     self.plt_data= self.plt_data[total_rec:]
         return self.plt_data
     
     def stopsocket(self):

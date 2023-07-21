@@ -92,12 +92,14 @@ class MessageReceiver:
                         maintenant = datetime.datetime.now()
                         format_date_heure = "%d/%m/%Y %H:%M:%S"
                         date_heure_formatee = maintenant.strftime(format_date_heure)
-                        
+                        sleep(1)
                         print("Temps total de communication de tous les receveurs  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time))
                 else:
                     maintenant = datetime.datetime.now()
+
                     format_date_heure = "%d/%m/%Y %H:%M:%S"
                     date_heure_formatee = maintenant.strftime(format_date_heure)
+                    sleep(1)
                     print("Temps total de communication  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time)) 
 
 

@@ -30,7 +30,7 @@ def main_receive(protocol, message_count, port, length, queue, logger, flag, nmb
         protocol_obj = KafkaProtocol(com,logger)
         protocol_obj.initialize()
     elif protocol == 'ingescape':
-        protocol_obj = IngescapeProtocol(com,port,device)
+        protocol_obj = IngescapeProtocol(com,port,device,nmbre_rec)
         protocol_obj.initialize()
     else:
         print("Unsupported protocol: "+str(protocol))

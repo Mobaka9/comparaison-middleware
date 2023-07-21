@@ -18,7 +18,7 @@ def string_input_callback(iop_type, iop_name, value_type, value, my_data):
         t1= time.time()
         tmp = [callback_self.id, value, t1]
         callback_self.plt_data.append(tmp) 
-        print(f"receiving message number {callback_self.id}") 
+        #print(f"{callback_self.id_rec}receiving message number {callback_self.id}") 
         callback_self.id+=1
     else:
         print("error callback_self")
@@ -54,7 +54,7 @@ def on_agent_event_callback(event, uuid, name, event_data, my_data):
 
 class IngescapeProtocol(AbstractProtocol):
     
-    def __init__(self,com,port,device):
+    def __init__(self,com,port,device,id_rec):
         self.is_initialized = False
         self.port = port
         self.send_end = ""
@@ -64,6 +64,7 @@ class IngescapeProtocol(AbstractProtocol):
         self.device=device
         self.com = com
         self.client=""
+        self.id_rec=id_rec
 
         
         
@@ -73,7 +74,7 @@ class IngescapeProtocol(AbstractProtocol):
                 IGSAPPNAME = 'Sender'
 
             else:
-                IGSAPPNAME = 'Receiver'
+                IGSAPPNAME = 'Receiver '+str(self.id_rec)
 
             
             # def oncxproc(agent, connected):
@@ -123,7 +124,6 @@ class IngescapeProtocol(AbstractProtocol):
         #sleep(5)
         
         while len(self.plt_data) != message_count:
-            
             pass 
         queue.put("close_sock")  
         print("close sent by rcv for snd")
@@ -134,10 +134,8 @@ class IngescapeProtocol(AbstractProtocol):
         #     print(self.send_end)
         #     self.send_end = queue.get()
         #     print(self.send_end)
-
         return self.plt_data
     
     def stopsocket(self):
         igs.stop()
-        print("stop socket ingescape")
         
