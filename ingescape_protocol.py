@@ -125,7 +125,11 @@ class IngescapeProtocol(AbstractProtocol):
         
         while len(self.plt_data) != message_count:
             pass 
-        queue.put("close_sock")  
+        if self.id_rec==0:
+            print("hey 0")
+            queue.put("close_sock")
+        else:
+            print("hey 1")  
         print("close sent by rcv for snd")
         # print(self.plt_data)
         # print(len(self.plt_data))
@@ -137,5 +141,6 @@ class IngescapeProtocol(AbstractProtocol):
         return self.plt_data
     
     def stopsocket(self):
+        print(f"trying to close {self.com}")
         igs.stop()
         

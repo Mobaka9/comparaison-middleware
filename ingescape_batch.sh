@@ -14,7 +14,7 @@ do
 
         for ((message_count=1000; message_count<=10000; message_count+=1000)); do
 
-            result=$(python3 main.py --protocol ivy --message_count $message_count --port 10.34.127.255:4912 --length $length --log_level FATAL | tail -n 2)
+            result=$(python3 main.py --protocol ivy --message_count $message_count --port 10.34.127.255:6475 --length $length --log_level FATAL | tail -n 2)
             total_time=$(echo "$result" | awk '{print $9}')
             average=$(echo "$result"| tail -n 1 | awk '{print $4}')
             echo "IVY,$length,$message_count,$sleep,$receivers,$total_time,$average" >> "$result_file"
@@ -31,7 +31,7 @@ do
         echo "Envoi de batchs de messages sans sleep de $length caractères avec zeromq" >> "$result_file"
         for ((message_count=1000; message_count<=10000; message_count+=1000)); do
 
-            result=$(python3 main.py --protocol zeromq --message_count $message_count --port 10.34.127.255:4912 --length $length --log_level FATAL | tail -n 2)
+            result=$(python3 main.py --protocol zeromq --message_count $message_count --port 6475 --length $length --log_level FATAL | tail -n 2)
             total_time=$(echo "$result" | awk '{print $9}')
             average=$(echo "$result"| tail -n 1 | awk '{print $4}')
             echo "ZeroMQ,$length,$message_count,$sleep,$receivers,$total_time,$average" >> "$result_file"
@@ -42,13 +42,13 @@ do
     echo "--------------------ingescape------------------" >> "$result_file"
     for length in 5 500 1000 2000 3000
     do
-        echo "Envoi de batchs de messages sans sleep de $length caractères avec zeromq" >> "$result_file"
+        echo "Envoi de batchs de messages sans sleep de $length caractères avec ingescape" >> "$result_file"
         for ((message_count=1000; message_count<=10000; message_count+=1000)); do
 
-            result=$(python3 main.py --protocol zeromq --message_count $message_count --port 10.34.127.255:4912 --length $length --device enp6s18 --log_level FATAL | tail -n 2)
+            result=$(python3 main.py --protocol ingescape --message_count $message_count --port 5670 --length $length --device enp6s18 --log_level FATAL | tail -n 2)
             total_time=$(echo "$result" | awk '{print $9}')
             average=$(echo "$result"| tail -n 1 | awk '{print $4}')
-            echo "ZeroMQ,$length,$message_count,$sleep,$receivers,$total_time,$average" >> "$result_file"
+            echo "ingescape,$length,$message_count,$sleep,$receivers,$total_time,$average" >> "$result_file"
         done
 
         

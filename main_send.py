@@ -94,5 +94,5 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             while( recv_fin != "close_sock" ):
                 
                 recv_fin = queue.get()
-                #print(recv_fin)
+            print("recv_fin received")
             protocol_obj.stopsocket()
