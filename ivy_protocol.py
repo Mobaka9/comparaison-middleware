@@ -138,7 +138,7 @@ class IvyProtocol(AbstractProtocol):
             self.send_end = queue.get()
             print(self.send_end)
         print(f"nbre de rec {total_rec}")
-        #print(self.plt_data)
+        print(self.plt_data)
         # if self.pop_hello:
         #     self.plt_data= self.plt_data[total_rec:]
         return self.plt_data

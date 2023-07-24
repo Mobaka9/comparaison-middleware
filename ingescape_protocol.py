@@ -74,7 +74,7 @@ class IngescapeProtocol(AbstractProtocol):
                 IGSAPPNAME = 'Sender'
 
             else:
-                IGSAPPNAME = 'Receiver '+str(self.id_rec)
+                IGSAPPNAME = 'Receiver_'+str(self.id_rec)
 
             
             # def oncxproc(agent, connected):

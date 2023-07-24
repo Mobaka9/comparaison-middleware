@@ -1,0 +1,5 @@
+Protocol,Message Length,Message Count,sleep,receivers,Total Time,Average
+--------------------IVY------------------
+ivy,3000,100000,,
+ivy,3000,100000,5.925666093826294,
+ivy,3000,100000,8.770469903945923,
