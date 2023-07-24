@@ -96,7 +96,7 @@ class IngescapeProtocol(AbstractProtocol):
             igs.observe_agent_events(on_agent_event_callback, self)
             igs.net_set_high_water_marks(0)
             #igs.net_raise_sockets_limit()
-            
+            igs.log_set_console_level(igs.LOG_FATAL)
             
             if self.com=="PUB":
                 igs.output_create("out", igs.STRING_T, None)

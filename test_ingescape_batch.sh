@@ -17,8 +17,8 @@ do
         echo "Envoi de batchs de messages sans sleep de $length caractères avec ingescape" >> "$result_file"
         for ((message_count=1000; message_count<=10000; message_count+=1000)); do
 
-            result=$(python3 main.py --protocol ingescape --message_count $message_count --port 5670 --length $length --device enp6s18 --log_level FATAL | tail -n 2)
-            total_time=$(echo "$result" | awk '{print $9}')
+            result=$(python3 main.py --protocol ingescape --message_count $message_count --port 5671 --length $length --device en11 --log_level FATAL | tail -n 2)
+            total_time=$(echo "$result" | awk '{print $10}')
             average=$(echo "$result"| tail -n 1 | awk '{print $4}')
             echo "ingescape,$length,$message_count,$sleep,$receivers,$total_time,$average" >> "$result_file"
         done
