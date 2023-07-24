@@ -41,7 +41,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     #     protocol_obj = KafkaProtocol(com,logger)
     #     protocol_obj.initialize()
     elif protocol == 'ingescape':
-        protocol_obj = IngescapeProtocol(com,port,device,None)
+        protocol_obj = IngescapeProtocol(com, port, device, None, queue)
         protocol_obj.initialize()
         
     else:
@@ -53,7 +53,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
 
     recvrdy=""
     while(not (str(nbr_processes-1) in recvrdy) ):
-            print(recvrdy)
+            print("recvrdy")
             recvrdy = queue.get()
             print(recvrdy)
 

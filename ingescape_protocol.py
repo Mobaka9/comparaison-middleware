@@ -28,33 +28,35 @@ def on_agent_event_callback(event, uuid, name, event_data, my_data):
     if isinstance(callback_self,IngescapeProtocol):
         
         if event == igs.PEER_ENTERED:
-            print(f"PEER_ENTERED about {name}")
+            print(f"{callback_self.APPNAME}: PEER_ENTERED about {name}")
         elif event == igs.PEER_EXITED:
-            print(f"PEER_EXITED about {name}")
+            print(f"{callback_self.APPNAME}: PEER_EXITED about {name}")
         elif event == igs.AGENT_ENTERED:
-            print(f"AGENT_ENTERED about {name}")
+            print(f"{callback_self.APPNAME}: AGENT_ENTERED about {name}")
         elif event == igs.AGENT_UPDATED_DEFINITION:
-            print(f"AGENT_UPDATED_DEFINITION about {name}")
+            print(f"{callback_self.APPNAME}: AGENT_UPDATED_DEFINITION about {name}")
         elif event == igs.AGENT_KNOWS_US:
-            print(f"AGENT_KNOWS_US about {name}")
-            #if callback_self =="SUB":
-                
+            print(f"{callback_self.APPNAME}: AGENT_KNOWS_US about {name}")
+            if callback_self.com =="SUB":
+                str_ready = "RECEIVER_READY "+str(callback_self.id_rec)
+                print(f"test entre {str_ready}" )
+                callback_self.queue.put(str_ready)                
         elif event == igs.AGENT_EXITED:
-            print(f"AGENT_EXITED about {name}")
+            print(f"{callback_self.APPNAME}: AGENT_EXITED about {name}")
         elif event == igs.AGENT_UPDATED_MAPPING:
-            print(f"AGENT_UPDATED_MAPPING about {name}")
+            print(f"{callback_self.APPNAME}: AGENT_UPDATED_MAPPING about {name}")
         elif event == igs.AGENT_WON_ELECTION:
-            print(f"AGENT_WON_ELECTION about {name}")
+            print(f"{callback_self.APPNAME}: AGENT_WON_ELECTION about {name}")
         elif event == igs.AGENT_LOST_ELECTION:
-            print(f"AGENT_LOST_ELECTION about {name}")
+            print(f"{callback_self.APPNAME}: AGENT_LOST_ELECTION about {name}")
         else:
-            print(f"UNKNOWN event about {name}")
+            print(f"{callback_self.APPNAME}: UNKNOWN event about {name}")
     else:
-        print("error callback event")
+        print(f"{callback_self.APPNAME}: error callback event")
 
 class IngescapeProtocol(AbstractProtocol):
     
-    def __init__(self,com,port,device,id_rec):
+    def __init__(self,com,port,device,id_rec,queue):
         self.is_initialized = False
         self.port = port
         self.send_end = ""
@@ -65,6 +67,8 @@ class IngescapeProtocol(AbstractProtocol):
         self.com = com
         self.client=""
         self.id_rec=id_rec
+        self.APPNAME=""
+        self.queue = queue
 
         
         
@@ -74,7 +78,8 @@ class IngescapeProtocol(AbstractProtocol):
                 IGSAPPNAME = 'Sender'
 
             else:
-                IGSAPPNAME = 'Receiver '+str(self.id_rec)
+                IGSAPPNAME = 'Receiver_'+str(self.id_rec)
+            self.APPNAME=IGSAPPNAME
 
             
             # def oncxproc(agent, connected):
@@ -124,12 +129,11 @@ class IngescapeProtocol(AbstractProtocol):
         #sleep(5)
         
         while len(self.plt_data) != message_count:
-            pass 
+            pass
         if self.id_rec==0:
             print("hey 0")
             queue.put("close_sock")
-        else:
-            print("hey 1")  
+        
         print("close sent by rcv for snd")
         # print(self.plt_data)
         # print(len(self.plt_data))
@@ -141,6 +145,6 @@ class IngescapeProtocol(AbstractProtocol):
         return self.plt_data
     
     def stopsocket(self):
-        print(f"trying to close {self.com}")
+        print(f"trying to close {self.APPNAME}")
         igs.stop()
         

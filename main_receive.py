@@ -17,7 +17,7 @@ from time import sleep
 def main_receive(protocol, message_count, port, length, queue, logger, flag, nmbre_rec, total_rec, multi_rec,direct_msg,device):
     
     
-    com = "sub"
+    com = "SUB"
     if protocol == 'ivy':
         protocol_obj = IvyProtocol(port, logger, com)
         protocol_obj.initialize()
@@ -30,7 +30,7 @@ def main_receive(protocol, message_count, port, length, queue, logger, flag, nmb
         protocol_obj = KafkaProtocol(com,logger)
         protocol_obj.initialize()
     elif protocol == 'ingescape':
-        protocol_obj = IngescapeProtocol(com,port,device,nmbre_rec)
+        protocol_obj = IngescapeProtocol(com,port,device,nmbre_rec,queue)
         protocol_obj.initialize()
     else:
         print("Unsupported protocol: "+str(protocol))
@@ -39,8 +39,10 @@ def main_receive(protocol, message_count, port, length, queue, logger, flag, nmb
     logger.info('Démarrage du receveur')
 
     #envoie de message aà l'autre process pour signaler que le receveur est prêt
-    str_ready = "RECEIVER_READY "+str(nmbre_rec)
-    queue.put(str_ready)
+    if(protocol != 'ingescape'):
+        str_ready = "RECEIVER_READY "+str(nmbre_rec)
+        queue.put(str_ready)
+        print(f"receiver {nmbre_rec} pret")
 
 
         
