@@ -23,6 +23,7 @@ def string_input_callback(iop_type, iop_name, value_type, value, my_data):
     else:
         print("error callback_self")
 
+
 def on_agent_event_callback(event, uuid, name, event_data, my_data):
     callback_self=my_data
     if isinstance(callback_self,IngescapeProtocol):
@@ -37,10 +38,11 @@ def on_agent_event_callback(event, uuid, name, event_data, my_data):
             print(f"{callback_self.APPNAME}: AGENT_UPDATED_DEFINITION about {name}")
         elif event == igs.AGENT_KNOWS_US:
             print(f"{callback_self.APPNAME}: AGENT_KNOWS_US about {name}")
-            if callback_self.com =="SUB":
-                str_ready = "RECEIVER_READY "+str(callback_self.id_rec)
-                print(f"test entre {str_ready}" )
-                callback_self.queue.put(str_ready)                
+            if callback_self.com =="PUB":
+                if "Receiver" in name:
+                    str_ready = "RECEIVER_READY "+str(name)
+                    print(f"test entre {str_ready}" )
+                    callback_self.queue.put(str_ready)   
         elif event == igs.AGENT_EXITED:
             print(f"{callback_self.APPNAME}: AGENT_EXITED about {name}")
         elif event == igs.AGENT_UPDATED_MAPPING:
@@ -69,6 +71,7 @@ class IngescapeProtocol(AbstractProtocol):
         self.id_rec=id_rec
         self.APPNAME=""
         self.queue = queue
+        self.ready_sent=False
 
         
         

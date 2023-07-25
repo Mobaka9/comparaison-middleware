@@ -52,11 +52,14 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
     
 
     recvrdy=""
-    while(not (str(nbr_processes-1) in recvrdy) ):
-            print("recvrdy")
-            recvrdy = queue.get()
-            print(recvrdy)
-
+    count = 0
+    while(count < (nbr_processes) ):
+        recvrdy = queue.get()
+        if "RECEIVER_READY" in recvrdy :                       
+            print(str("j'ai recu ")+recvrdy )
+            count +=1
+            print(count)
+    print("we passed")
     if True:
         sleep(2)
 
