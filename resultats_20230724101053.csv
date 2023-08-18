@@ -1,6 +1,0 @@
-Protocol,Message Length,Message Count,sleep,receivers,Total Time,Average
---------------------IVY------------------
---------------------ingescape------------------
-Envoi de batchs de messages sans sleep de 5 caractères avec ingescape
-ingescape,5,1000,0,1,device,
-ingescape,5,2000,0,1,device,

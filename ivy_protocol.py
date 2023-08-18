@@ -11,7 +11,7 @@ import ivy.ivy
 
 class IvyProtocol(AbstractProtocol):
     
-    def __init__(self,args,logger,com):
+    def __init__(self,args,logger,com,queue):
         self.is_initialized = False
         self.args = args
         self.send_end = ""
@@ -23,6 +23,7 @@ class IvyProtocol(AbstractProtocol):
         self.com = com
         self.client=""
         self.total=0
+        self.queue=queue
         
     
     
@@ -56,6 +57,9 @@ class IvyProtocol(AbstractProtocol):
             def oncxproc(agent, event_type):
                 if event_type == IvyApplicationDisconnected:
                     lprint('Ivy application %r was disconnected', agent)
+                    if self.com == "PUB":
+                        if "Receiver" in str(agent):
+                            self.queue.put(f"close_sock {agent}")
                 else:
                     lprint('Ivy application %r was connected', agent)
                 lprint('currents Ivy application are [%s]', IvyGetApplicationList())

@@ -88,12 +88,16 @@ class MessageReceiver:
                         time_interval = self.data[i][2] - t0
                         self.plt_data.append(time_interval)
                 if multi_rec:
-                    if(nmbre_rec == total_rec-1):
+                    # if(nmbre_rec == total_rec-1):
                         maintenant = datetime.datetime.now()
                         format_date_heure = "%d/%m/%Y %H:%M:%S"
                         date_heure_formatee = maintenant.strftime(format_date_heure)
-                        sleep(1)
-                        print("Temps total de communication de tous les receveurs  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time))
+                        #sleep(2)
+                        result=f"receivertotal_{str(nmbre_rec)}#{str(self.data[-1][2] - start_time)}"
+                        print(result)
+
+                        queue.put(result)
+                        # print("Temps total de communication de tous les receveurs  au "+str(date_heure_formatee)+" : ", (self.data[-1][2] - start_time))
                 else:
                     maintenant = datetime.datetime.now()
 

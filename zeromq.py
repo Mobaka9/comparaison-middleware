@@ -5,7 +5,7 @@ from time import sleep
 
 
 class ZeroMQProtocol(AbstractProtocol):
-    def __init__(self, port, com, logger):
+    def __init__(self, port, com, logger, queue):
         self.port = port
         self.socket = None
         self.context= None
@@ -14,9 +14,9 @@ class ZeroMQProtocol(AbstractProtocol):
         self.id = 0
         self.send_end = ""
         self.socket_test = None
-        self.topic = "10001"
         self.port_test = "5557"
         self.logger = logger
+        self.queue=queue
 
     def initialize(self):
         self.context = zmq.Context()
@@ -73,7 +73,10 @@ class ZeroMQProtocol(AbstractProtocol):
 
     def stopsocket(self):
         try:
+            
             self.socket.close()
+            if self.com == "SUB":
+                self.queue.put(f"close_sock ")
 
         except:
             pass # log or print any EXC-case here, as needed

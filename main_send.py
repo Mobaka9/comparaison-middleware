@@ -29,7 +29,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             protocol_obj = IvyDirectProtocol(args,logger,com)
             protocol_obj.initialize()
         else:
-            protocol_obj = IvyProtocol(args,logger,com)
+            protocol_obj = IvyProtocol(args,logger,com,queue)
             protocol_obj.initialize()
 
     elif protocol == 'zeromq':
@@ -58,7 +58,7 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
         if "RECEIVER_READY" in recvrdy :                       
             print(str("j'ai recu ")+recvrdy )
             count +=1
-            print(count)
+            print(f"count {count}")
     print("we passed")
     if True:
         sleep(2)
@@ -84,18 +84,25 @@ def main_send(protocol, message_count, port,length, queue, logger, traitement, f
             #print(f"sending message n:{i}")
             sleep(traitement)
 
-        
+        results=[]
         print("envoi termine")
         #sleep(60)
         #protocol_obj.stopsocket()
         for i in range(1000):
             queue.put("LAST_MESSAGE")
-        if protocol == "ivy" :
-            protocol_obj.stopsocket()
-        elif protocol == "ingescape":
-            recv_fin=""
-            while( recv_fin != "close_sock" ):
-                
-                recv_fin = queue.get()
-            print("recv_fin received")
-            protocol_obj.stopsocket()
+
+        count_close=0
+        recv_fin=""
+        while( count_close < nbr_processes ):
+            recv_fin = queue.get()
+            if "close_sock" in recv_fin:
+                print(recv_fin)
+                count_close+=1
+        while( len(results) < nbr_processes ):    
+            recv_fin = queue.get()
+            if "total" in recv_fin:
+
+                results.append(float(recv_fin.split("#")[1]))
+        print(results)
+        #sleep(1)
+        protocol_obj.stopsocket()

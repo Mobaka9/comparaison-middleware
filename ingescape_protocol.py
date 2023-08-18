@@ -45,6 +45,10 @@ def on_agent_event_callback(event, uuid, name, event_data, my_data):
                     callback_self.queue.put(str_ready)   
         elif event == igs.AGENT_EXITED:
             print(f"{callback_self.APPNAME}: AGENT_EXITED about {name}")
+            if callback_self.com == "PUB":
+                if "Receiver" in name:
+                    callback_self.queue.put(f"close_sock {name}")
+                
         elif event == igs.AGENT_UPDATED_MAPPING:
             print(f"{callback_self.APPNAME}: AGENT_UPDATED_MAPPING about {name}")
         elif event == igs.AGENT_WON_ELECTION:
@@ -72,6 +76,7 @@ class IngescapeProtocol(AbstractProtocol):
         self.APPNAME=""
         self.queue = queue
         self.ready_sent=False
+        self.count_close=0
 
         
         
@@ -133,11 +138,12 @@ class IngescapeProtocol(AbstractProtocol):
         
         while len(self.plt_data) != message_count:
             pass
-        if self.id_rec==0:
-            print("hey 0")
-            queue.put("close_sock")
+            # sleep(1)
+            # print(f"{self.APPNAME} not finished")
+
+        # queue.put(f"close_sock {self.APPNAME}")
         
-        print("close sent by rcv for snd")
+        # print("close sent by rcv for snd")
         # print(self.plt_data)
         # print(len(self.plt_data))
 
